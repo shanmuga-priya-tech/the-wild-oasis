@@ -17,7 +17,8 @@ import AppLayout from "./ui/AppLayout";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60 * 1000, //staleTime is the time that the data cached should be refetched
+      staleTime: 0,
+      // staleTime: 60 * 1000, //staleTime is the time that the data cached should be refetched
     },
   },
 });
