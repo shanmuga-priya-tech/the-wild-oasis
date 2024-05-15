@@ -14,13 +14,25 @@ const StyledAppLayout = styled.div`
   grid-template-rows: auto 1fr;
 `;
 
+const Container = styled.div`
+  //cenntering the all cabin page
+  max-width: 120rem;
+  margin: 0 auto;
+  //adding gap between allcabin title and table
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+`;
+
 function AppLayout() {
   return (
     <StyledAppLayout>
       <Header />
       <Sidebar />
       <Main>
-        <Outlet />
+        <Container>
+          <Outlet />
+        </Container>
       </Main>
     </StyledAppLayout>
   );
