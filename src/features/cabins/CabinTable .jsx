@@ -29,6 +29,7 @@ const TableHeader = styled.header`
 `;
 
 function CabinTable() {
+  //importing custom hook
   const { isLoading, cabins } = useCabins();
   if (isLoading) return <Spinner />;
   return (
