@@ -10,21 +10,32 @@ export async function getCabins() {
   return data;
 }
 
-export async function createCabin(newcabin) {
+//reusing this function for both editing and creating a cabin
+export async function createEditCabin(newcabin, id) {
+  //we check if the image is edit or not by chceking its pathif it is there we use that one if not we createed a new imagepath
+  //if there is already an image it should start with supabaseUrl
+  const hasImagePath = newcabin.image?.startsWith?.(supabaseUrl);
+
   const imageName = `${Math.random()}-${newcabin.image.name}`.replaceAll(
     "/",
     ""
-  ); //becoz if there is a / in the filrname it will create a new folder for it to avoid that we replace all / with emtptystr
+  ); //becoz if there is a "/" in the filename it will create a new folder for it to avoid that we replace all / with emtptystr
 
-  //supabaseurl+storagebucket+imageName
-  const imagePath = `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
+  const imagePath = hasImagePath
+    ? newcabin.image
+    : //supabaseurl+storagebucket+imageName
+      `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
 
-  //1)create cabin
+  //1.create / edit cabin
+  let query = supabase.from("cabins");
+  //A)create cabin
   //apidocs->insert Row
-  const { data, error } = await supabase
-    .from("cabins")
-    .insert([{ ...newcabin, image: imagePath }])
-    .select();
+  if (!id) query = query.insert([{ ...newcabin, image: imagePath }]);
+
+  //B)edit cabin
+  if (id) query = query.update({ ...newcabin, image: imagePath }).eq("id", id);
+
+  const { data, error } = await query.select().single(); //usually the data wont be available as soon the cabin is created so we use .select().single()is used to get the data immediately inorder to return it
 
   if (error) {
     console.error(error);
