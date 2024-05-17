@@ -9,13 +9,13 @@ import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
+import { useCreateCabin } from "./useCreateCabin";
 
-function CreateCabinForm({ cabinToEdit }) {
+//we have set a default value to empty obj to avoid undefined error
+function CreateCabinForm({ cabinToEdit = {} }) {
   const { id: editId, ...editValues } = cabinToEdit;
   //if there is an id in the incoming data which means its already created and meant for editing
   const isEditSession = Boolean(editId);
-
-  const queryClient = useQueryClient();
 
   //we can set a default values to useForm hook to prefill the edit form with the cabin data inorder to edit it
   const { register, handleSubmit, reset, getValues, formState } = useForm({
@@ -23,17 +23,10 @@ function CreateCabinForm({ cabinToEdit }) {
   });
   const { errors } = formState;
 
-  const { mutate: createCabin, isLoading: isCreating } = useMutation({
-    mutationFn: createEditCabin,
-    onSuccess: () => {
-      toast.success("New cabin successfully created");
-      queryClient.invalidateQueries({
-        queryKey: ["cabins"],
-      });
-      reset();
-    },
-    onError: (err) => toast.error(err.message),
-  });
+  //importing custom hook
+  const { isCreating, createCabin } = useCreateCabin();
+
+  const queryClient = useQueryClient();
 
   const { mutate: editCabin, isLoading: isEditing } = useMutation({
     //mutationfn will accept only one arg so we pass the data and id as a single obj as arg
@@ -54,7 +47,13 @@ function CreateCabinForm({ cabinToEdit }) {
     const image = typeof data.image === "string" ? data.image : data.image[0];
     if (isEditSession)
       editCabin({ newcabinData: { ...data, image: image }, id: editId });
-    else createCabin({ ...data, image: image });
+    else
+      createCabin(
+        { ...data, image: image },
+        {
+          onSuccess: () => reset(),
+        }
+      );
   }
 
   // function onError(errors) {
