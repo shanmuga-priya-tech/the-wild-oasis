@@ -15,14 +15,14 @@ function AddCabin() {
         <CreateCabinForm />
       </Modal.ModalWindow>
 
-      {/* reused the same modal component to display diff content */}
+      {/* reused the same modal component to display diff content
       <Modal.OpenBtn opens="table">
         {/* opens and nameprops are used to identify which modal window is currently active */}
-        <Button>Show table</Button>
+      {/* <Button>Show table</Button>
       </Modal.OpenBtn>
       <Modal.ModalWindow name="table">
         <CabinTable />
-      </Modal.ModalWindow>
+  </Modal.ModalWindow> */}
     </Modal>
   );
 }
