@@ -11,7 +11,6 @@ import { useCreateCabin } from "./useCreateCabin";
 import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Table from "../../ui/Table";
-import Menus from "../../ui/Menus";
 
 // const TableRow = styled.div`
 //   display: grid;
@@ -90,38 +89,34 @@ function CabinRow({ cabin }) {
         <span>&mdash;</span>
       )}
       <div>
+        <button disabled={isCreating} onClick={handleDuplicate}>
+          <HiSquare2Stack />
+        </button>
+
         {/* used a COMPOUND COMPONENT PATTERN */}
         <Modal>
-          <Menus.Menu>
-            <Menus.Toggle id={cabinId} />
+          <Modal.OpenBtn opens="edit">
+            <button>
+              <HiPencil />
+            </button>
+          </Modal.OpenBtn>
+          <Modal.ModalWindow name="edit">
+            <CreateCabinForm cabinToEdit={cabin} />
+          </Modal.ModalWindow>
 
-            <Menus.List id={cabinId}>
-              <Menus.Button icon={<HiSquare2Stack />} onClick={handleDuplicate}>
-                Duplicate
-              </Menus.Button>
-
-              <Modal.OpenBtn opens="edit">
-                <Menus.Button icon={<HiPencil />}>edit</Menus.Button>
-              </Modal.OpenBtn>
-
-              <Modal.OpenBtn opens="delete">
-                <Menus.Button icon={<HiTrash />}>delete</Menus.Button>
-              </Modal.OpenBtn>
-            </Menus.List>
-
-            <Modal.ModalWindow name="edit">
-              <CreateCabinForm cabinToEdit={cabin} />
-            </Modal.ModalWindow>
-
-            <Modal.ModalWindow name="delete">
-              {/* importing confirmdelete component */}
-              <ConfirmDelete
-                resourceName="cabins"
-                disabled={isDeleting}
-                onConfirm={() => deleteCabin(cabinId)}
-              />
-            </Modal.ModalWindow>
-          </Menus.Menu>
+          <Modal.OpenBtn opens="delete">
+            <button>
+              <HiTrash />
+            </button>
+          </Modal.OpenBtn>
+          <Modal.ModalWindow name="delete">
+            {/* importing confirmdelete component */}
+            <ConfirmDelete
+              resourceName="cabins"
+              disabled={isDeleting}
+              onConfirm={() => deleteCabin(cabinId)}
+            />
+          </Modal.ModalWindow>
         </Modal>
       </div>
     </Table.Row>
