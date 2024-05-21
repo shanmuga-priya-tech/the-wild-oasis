@@ -92,7 +92,11 @@ function Row({ children }) {
   );
 }
 
-function Body({ children }) {}
+//render prop
+function Body({ data, render }) {
+  if (!data.length) return <Empty>No data to show at the moment.</Empty>;
+  return <StyledBody>{data.map(render)}</StyledBody>;
+}
 
 //4)Setting child component as property to parent component
 Table.Header = Header;
