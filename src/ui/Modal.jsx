@@ -1,7 +1,15 @@
-import { cloneElement, createContext, useContext, useState } from "react";
+import {
+  cloneElement,
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { createPortal } from "react-dom";
 import { HiXMark } from "react-icons/hi2";
 import styled from "styled-components";
+import { useOutsideClick } from "../hooks/useOutsideClick";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -79,13 +87,15 @@ function OpenBtn({ children, opens }) {
 
 function ModalWindow({ children, name }) {
   const { closeModal, openName } = useContext(ModalContext);
+  //importing our custom hook toclosemodal when clicked outside of the modal window
+  const ref = useOutsideClick(closeModal);
 
-  //chceking which window to open by comparing the window name with currently active state
+  //checking which window to open by comparing the window name with currently active state
   if (name !== openName) return null;
 
   return createPortal(
     <Overlay>
-      <StyledModal>
+      <StyledModal ref={ref}>
         <div>{cloneElement(children, { onCloseModal: closeModal })}</div>
         <Button onClick={closeModal}>
           <HiXMark />
