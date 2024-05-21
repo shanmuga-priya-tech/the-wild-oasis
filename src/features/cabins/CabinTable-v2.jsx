@@ -3,7 +3,15 @@ import styled from "styled-components";
 import Spinner from "../../ui/Spinner";
 import CabinRow from "./CabinRow";
 import { useCabins } from "./useCabins";
-import Table from "../../ui/Table";
+
+const Table = styled.div`
+  border: 1px solid var(--color-grey-200);
+
+  font-size: 1.4rem;
+  background-color: var(--color-grey-0);
+  border-radius: 7px;
+  overflow: hidden;
+`;
 
 const TableHeader = styled.header`
   display: grid;
@@ -25,11 +33,11 @@ function CabinTable() {
   const { isLoading, cabins } = useCabins();
   if (isLoading) return <Spinner />;
   return (
-    <Table columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
+    <Table role="table">
       {" "}
       {/* we are specifying role as table to tell the browser that this html ele
       should be table but we used div to create this styled component */}
-      <Table.Header>
+      <TableHeader role="row">
         {/* we are specifying role as row to tell the browser that this html ele
         should be table but we used header to create this styled component */}
         <div></div>
@@ -38,7 +46,7 @@ function CabinTable() {
         <div>Price</div>
         <div>Discount</div>
         <div></div>
-      </Table.Header>
+      </TableHeader>
       {cabins.map((cabin) => (
         <CabinRow cabin={cabin} key={cabin.id} />
       ))}
