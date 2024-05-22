@@ -21,11 +21,11 @@ export function useBookings() {
   //fetching the data from api
   const {
     isLoading,
-    data: bookings,
+    data: { data: bookings, count } = {}, //to prevent undefined error we used empty{}
     error,
   } = useQuery({
     queryKey: ["bookings", filter, sortBy], //whenever the filter or sortBy changes the data will be refetched again
     queryFn: () => getBookings({ filter, sortBy }),
   });
-  return { isLoading, error, bookings };
+  return { isLoading, error, bookings, count };
 }
