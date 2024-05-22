@@ -1,4 +1,5 @@
 import Filter from "../../ui/Filter";
+import SortBy from "../../ui/SortBy";
 import TableOperations from "../../ui/TableOperations";
 
 function FilterSortingCabin() {
@@ -10,6 +11,17 @@ function FilterSortingCabin() {
           { value: "all", label: "All" },
           { value: "no-discount", label: "No discount" },
           { value: "with-discount", label: "With discount" },
+        ]}
+      />
+
+      <SortBy
+        options={[
+          { value: "name-asec", label: "Sort By name(A-Z)" },
+          { value: "name-dsec", label: "Sort By name(Z-A)" },
+          { value: "regularPrice-asec", label: "Sort By low to high" },
+          { value: "regularPrice-desc", label: "Sort By high to low" },
+          { value: "maxCapacity-asec", label: "Sort By maxCapacity(lowFirst)" },
+          { value: "maxCapacity-dsec", label: "Sort By maxCapacity(lowFirst)" },
         ]}
       />
     </TableOperations>
