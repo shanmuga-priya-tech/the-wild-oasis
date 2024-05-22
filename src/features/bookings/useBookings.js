@@ -13,14 +13,19 @@ export function useBookings() {
       : { field: "status", value: filterValue };
   // { field: "price", value: 5000, operation: "gte" };
 
+  //2)SORTING
+  const sortByValue = searchParams.get("sortBy");
+  const [field, direction] = sortByValue.split("-");
+  const sortBy = { field, direction };
+
   //fetching the data from api
   const {
     isLoading,
     data: bookings,
     error,
   } = useQuery({
-    queryKey: ["bookings", filter], //whenever the filter changes the data will be refetched again
-    queryFn: () => getBookings({ filter }),
+    queryKey: ["bookings", filter, sortBy], //whenever the filter or sortBy changes the data will be refetched again
+    queryFn: () => getBookings({ filter, sortBy }),
   });
   return { isLoading, error, bookings };
 }
