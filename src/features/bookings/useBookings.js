@@ -14,7 +14,7 @@ export function useBookings() {
   // { field: "price", value: 5000, operation: "gte" };
 
   //2)SORTING
-  const sortByValue = searchParams.get("sortBy");
+  const sortByValue = searchParams.get("sortBy") || "startDate-desc";
   const [field, direction] = sortByValue.split("-");
   const sortBy = { field, direction };
 
