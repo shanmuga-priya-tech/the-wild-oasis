@@ -35,6 +35,7 @@ const FilterButton = styled.button`
   }
 `;
 
+//building a reusable filter component
 function Filter({ filterField, options }) {
   //storing the filtered option in the url
   const [searchParams, setSearchParams] = useSearchParams();
