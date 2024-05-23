@@ -43,6 +43,9 @@ function Filter({ filterField, options }) {
 
   function handleClick(value) {
     searchParams.set(filterField, value); //http://localhost:5173/cabins?discount=all
+    //when we reached the last page and applied any filter we are resetting it to page 1 to avoid errors
+    if (searchParams.get("page")) searchParams.set("page", 1);
+
     setSearchParams(searchParams);
   }
   return (
