@@ -54,11 +54,24 @@ function CheckinBooking() {
 
   //calculating the price of breakfast
 
-  const optionBreakfastPrice = settings.breakfastPrice * numNights * numGuests;
+  const optionalBreakfastPrice =
+    settings.breakfastPrice * numNights * numGuests;
 
   function handleCheckin() {
     if (!confirmPaid) return;
-    checkin(bookingId);
+
+    if (addBreakfast) {
+      checkin({
+        bookingId,
+        breakfast: {
+          hasBreakfast: true,
+          extrasPrice: optionalBreakfastPrice,
+          totalPrice: totalPrice + optionalBreakfastPrice,
+        },
+      });
+    } else {
+      checkin({ bookingId, breakfast: {} });
+    }
   }
 
   return (
@@ -79,7 +92,7 @@ function CheckinBooking() {
             }}
             id="breakfast" //to check the checkbox even when labelis clicked
           >
-            Want to add breakfast for {formatCurrency(optionBreakfastPrice)} ?
+            Want to add breakfast for {formatCurrency(optionalBreakfastPrice)} ?
           </CheckBox>
         </Box>
       )}
@@ -92,7 +105,13 @@ function CheckinBooking() {
           disabled={confirmPaid || isCheckingIn}
         >
           I confirm that {guests.fullName} has paid the total amount of{" "}
-          {formatCurrency(totalPrice)}
+          {!addBreakfast
+            ? formatCurrency(totalPrice)
+            : `${formatCurrency(
+                totalPrice + optionalBreakfastPrice
+              )}  (${formatCurrency(totalPrice)}+${formatCurrency(
+                optionalBreakfastPrice
+              )})`}
         </CheckBox>
       </Box>
       <ButtonGroup>
