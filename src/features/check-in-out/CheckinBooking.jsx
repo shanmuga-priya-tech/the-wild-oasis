@@ -8,6 +8,8 @@ import Button from "../../ui/Button";
 import ButtonText from "../../ui/ButtonText";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
+import { useBookingDetail } from "../bookings/useBookingDetail";
+import Spinner from "../../ui/Spinner";
 
 const Box = styled.div`
   /* Box */
@@ -18,9 +20,10 @@ const Box = styled.div`
 `;
 
 function CheckinBooking() {
+  const { bookingDetail, isLoading } = useBookingDetail();
   const moveBack = useMoveBack();
 
-  const booking = {};
+  if (isLoading) return <Spinner />;
 
   const {
     id: bookingId,
@@ -29,7 +32,7 @@ function CheckinBooking() {
     numGuests,
     hasBreakfast,
     numNights,
-  } = booking;
+  } = bookingDetail;
 
   function handleCheckin() {}
 
@@ -40,7 +43,7 @@ function CheckinBooking() {
         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
       </Row>
 
-      <BookingDataBox booking={booking} />
+      <BookingDataBox booking={bookingDetail} />
 
       <ButtonGroup>
         <Button onClick={handleCheckin}>Check in booking #{bookingId}</Button>
