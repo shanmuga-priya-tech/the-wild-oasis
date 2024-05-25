@@ -53,12 +53,14 @@ export async function getBooking(id) {
 }
 
 // Returns all BOOKINGS that are were created after the given date. Useful to get bookings created in the last 30 days, for example.
+//date should be in ISOString format
 export async function getBookingsAfterDate(date) {
   const { data, error } = await supabase
     .from("bookings")
     .select("created_at, totalPrice, extrasPrice")
     .gte("created_at", date)
-    .lte("created_at", getToday({ end: true }));
+    .lte("created_at", getToday({ end: true })); //getToday fn is a helper fn we created to convert the date to ISOstring
+  //we pass{end:true} to basically compute the date to either start of the day or end of the day not for every milliseconds
 
   if (error) {
     console.error(error);
