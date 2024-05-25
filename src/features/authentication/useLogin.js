@@ -11,7 +11,7 @@ function useLogin() {
     onSuccess: (user) => {
       //as soon as looged in the user data will be available in cache in that case we dont need to refetch it again,
       //we only need to refetch the data whenever the page reloads so we are setting the same query in the useUser hook which is used to refetch the user data whenever page loads here to avoid refetching when logged in
-      queryClient.setQueriesData(["user"], user);
+      queryClient.setQueryData(["user"], user.user);
 
       toast.success("user logged in successfully");
       navigate("/dashboard", { replace: true });
